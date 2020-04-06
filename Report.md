@@ -1,51 +1,76 @@
-# Deep Reinforcement Learning : Collaboration and Competition
+## Learning Algorithm
 
-This project repository contains my solution for the Udacity's [Deep Reinforcement Learning Nanodegree](https://www.udacity.com/course/deep-reinforcement-learning-nanodegree--nd893) Project 3: Collaboration and Competition.
+The agent is trained with the [Multi Agent DDPG](https://arxiv.org/abs/1706.02275). The full algorithm is described in the METHODS section of the paper.
 
-## Project's goal
+The information flow in a MADDPG algorithm is depeicted below (Screenshot from the paper)
 
-![Tennis Agents](images/tennis.png)
+![MADDPG](./images/maddpg.png)
 
-In this project, 2 agents are required to control rackets to bounce a ball over a net. If an agent hits the ball over the net, it receives a reward of +0.1.  If an agent lets a ball hit the ground or hits the ball out of bounds, it receives a reward of -0.01.  **The goal of each agent is to keep the ball in play without touching the table.**
+## Parameters
 
-The task is episodic, and in order to solve the environment, **the agents must get an average score of +0.5 (over 100 consecutive episodes, after taking the maximum over both agents)**. Specifically,
+- BUFFER_SIZE = int(1e5)  # replay buffer size
+- BATCH_SIZE = 250         # minibatch size
+- GAMMA = 0.99            # discount factor
+- TAU = 1e-3              # for soft update of target parameters
+- LR_ACTOR = 1e-4         # learning rate of the actor
+- LR_CRITIC = 1e-3        # learning rate of the critic 2539
+- WEIGHT_DECAY = 0        # L2 weight decay
 
-- After each episode, we add up the rewards that each agent received (without discounting), to get a score for each agent. This yields 2 (potentially different) scores. We then take the maximum of these 2 scores.
-- This yields a single **score** for each episode.
+## Architecture of each of the 2 Agents
 
-The environment is considered solved, when the average (over 100 episodes) of those **scores is at least +0.5.**
+Actor
 
+- 2 fully connected layers with 200 and 150 units each
 
-### Multi Agent Deep Deterministic Policy Gradient Algorithm
+Critic
 
-A multi agent variant of DDPG called **Multi Agent Deep Deterministic Policy Gradient (MADDPG)** is  described in the paper [Multi-Agent Actor-Critic for Mixed Cooperative-Competitive Environments](https://arxiv.org/abs/1706.02275)
+- 2 fully connected layers with 200 and 150 units each
 
-### Udacity Environment
+ReplayBuffer
 
-The environment is based on [Unity ML-agents](https://github.com/Unity-Technologies/ml-agents). The project environment provided by Udacity is similar to the [Tennis](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#tennis) environment on the Unity ML-Agents GitHub page.
+- A fixed size buffer of size 1e5
 
-The observation space consists of 8 variables corresponding to the position and velocity of the ball and racket. Each agent receives its own, local observation.  Two continuous actions are available, corresponding to movement toward (or away from) the net, and jumping. 
+## Plot of Rewards
 
-### Solving the Environment
+```
+Episode 100	Average score: 0.005
+Episode 200	Average score: 0.000
+Episode 300	Average score: 0.000
+Episode 400	Average score: 0.006
+Episode 500	Average score: 0.017
+Episode 600	Average score: 0.023
+Episode 700	Average score: 0.005
+Episode 800	Average score: 0.000
+Episode 900	Average score: 0.011
+Episode 1000	Average score: 0.046
+Episode 1100	Average score: 0.107
+Episode 1200	Average score: 0.139
+Episode 1300	Average score: 0.340
+Episode 1400	Average score: 0.384
+Solved in episode: 1486 	Average score: 0.502
+```
 
-In this Udacity project, the environment is considered solved, when the average (over 100 episodes) of those **scores is at least +0.5.**
+The plot of the scores over all episodes is shown below
 
+![Episode Scores](./images/episode_scores.png)
 
-## Getting started
+The plot of the average scores as training progresses is shown below
 
-### Installation requirements
+![Average Scores](./images/average_scores.png)
 
-- Youhave to clone this project and have it accessible in your Python environment
-- Then you have to install the Unity environment as described in the [Getting Started section](https://github.com/udacity/deep-reinforcement-learning/blob/master/p3_collab-compet/README.md) (The Unity ML-agent environment is already configured by Udacity)
+## Observations/Issues
 
-- Download the environment from one of the links below.  You need only select the environment that matches your operating system:
-    - Linux: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P3/Tennis/Tennis_Linux.zip)
-    - Mac OSX: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P3/Tennis/Tennis.app.zip)
-    - Windows (32-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P3/Tennis/Tennis_Windows_x86.zip)
-    - Windows (64-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P3/Tennis/Tennis_Windows_x86_64.zip)
+* The Agent was initially training very slowly but picked up rewards fast after around 800 episodes. 
 
-- Finally, unzip the environment archive in the 'project's environment' directory and eventually adjust the path to the UnityEnvironment in the code.
+## Trained Models
 
-### Train a agent
-    
-Execute the provided Tennis.ipynb notebook within this git repository.
+- The ```agent1_checkpoint_actor.pth``` file represents the first agent actor
+- The ```agent1_checkpoint_critic.pth``` file represents the first agent critic
+- The ```agent2_checkpoint_actor.pth``` file represents the second agent actor
+- The ```agent2_checkpoint_critic.pth``` file represents the second agent critic
+
+## Further Improvements
+The following techniques can be tried out to further improve the performance of the network
+- [Prioritized Experience Replay](https://arxiv.org/abs/1511.05952): This technique prioritizes the experiences and chooses the best experience for further training when sampling from the buffer. This is known to reduce the training time and make the training more efficient.
+- [Asynchornous Actor Critic Agent](https://medium.com/emergent-future/simple-reinforcement-learning-with-tensorflow-part-8-asynchronous-actor-critic-agents-a3c-c88f72a5e9f2): This technique trains multiple worker agents that interact with a glocal network asynchronously to optimize the policy and value function. This way, each of these agents interacts with it’s own copy of the environment at the same time as the other agents are interacting with their environments.
+- [Proximal Policy Optimization](https://arxiv.org/abs/1707.06347): This technique modifies the parameters of the network in such a way that the new set of parameters is looked for in the immediate neighbourhood of the parameters in the previous iteration of the training. This is shown also to be an efficient way of training the network so the search space is more optimal. 
