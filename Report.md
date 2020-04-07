@@ -54,11 +54,11 @@ Solved in episode: 1611 	Average score: 0.502
 
 The plot of the scores over all episodes is shown below
 
-![Episode Scores](./images/1.png)
+![Episode Scores](./images/1.PNG)
 
 The plot of the average scores as training progresses is shown below
 
-![Average Scores](./images/2.png)
+![Average Scores](./images/2.PNG)
 
 ## Observations/Issues
 
