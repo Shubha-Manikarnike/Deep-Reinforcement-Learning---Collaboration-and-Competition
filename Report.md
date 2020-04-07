@@ -33,30 +33,32 @@ ReplayBuffer
 ## Plot of Rewards
 
 ```
-Episode 100	Average score: 0.005
+Episode 100	Average score: 0.003
 Episode 200	Average score: 0.000
 Episode 300	Average score: 0.000
-Episode 400	Average score: 0.006
-Episode 500	Average score: 0.017
-Episode 600	Average score: 0.023
-Episode 700	Average score: 0.005
-Episode 800	Average score: 0.000
-Episode 900	Average score: 0.011
-Episode 1000	Average score: 0.046
-Episode 1100	Average score: 0.107
-Episode 1200	Average score: 0.139
-Episode 1300	Average score: 0.340
-Episode 1400	Average score: 0.384
-Solved in episode: 1486 	Average score: 0.502
+Episode 400	Average score: 0.000
+Episode 500	Average score: 0.008
+Episode 600	Average score: 0.003
+Episode 700	Average score: 0.026
+Episode 800	Average score: 0.043
+Episode 900	Average score: 0.082
+Episode 1000	Average score: 0.126
+Episode 1100	Average score: 0.159
+Episode 1200	Average score: 0.265
+Episode 1300	Average score: 0.299
+Episode 1400	Average score: 0.374
+Episode 1500	Average score: 0.356
+Episode 1600	Average score: 0.482
+Solved in episode: 1611 	Average score: 0.502
 ```
 
 The plot of the scores over all episodes is shown below
 
-![Episode Scores](./images/episode_scores.png)
+![Episode Scores](./images/1.png)
 
 The plot of the average scores as training progresses is shown below
 
-![Average Scores](./images/average_scores.png)
+![Average Scores](./images/2.png)
 
 ## Observations/Issues
 
